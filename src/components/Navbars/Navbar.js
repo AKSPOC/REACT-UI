@@ -11,17 +11,22 @@ import {
   Row,
   Col
 } from "reactstrap";
+import {getProfile,getAchievement,getContacts,profile} from "../../dao/restDAO.js";
 
 class PagesNavbar extends React.Component {
   constructor(props) {
     super(props);
-    this.home_title = "Er. Amit Kumar Sharma";
     this.state = {
       collapseOpen: false,
-      color: "navbar-transparent"
+      color: "navbar-transparent",
     };
   }
+
+
   componentDidMount() {
+    getAchievement();
+    getContacts();
+    getProfile();
     window.addEventListener("scroll", this.changeColor);
   }
   componentWillUnmount() {
@@ -44,6 +49,7 @@ class PagesNavbar extends React.Component {
       });
     }
   };
+
   toggleCollapse = () => {
     document.documentElement.classList.toggle("nav-open");
     this.setState({
@@ -60,20 +66,21 @@ class PagesNavbar extends React.Component {
       collapseOut: ""
     });
   };
+
   render() {
+
     return (
       <Navbar
         className={"fixed-top " + this.state.color}
         color-on-scroll="100"
-        expand="lg"
-      >
+        expand="lg">
         <Container>
           <div className="navbar-translate">
             <NavbarBrand
               to="/"
               id="navbar-brand"
               tag={Link}>
-              {this.home_title}
+              {profile.map((user, index) => (user.name))}
             </NavbarBrand>
             <button
               aria-expanded={this.state.collapseOpen}
@@ -96,7 +103,7 @@ class PagesNavbar extends React.Component {
               <Row>
                 <Col className="collapse-brand" xs="6">
                   <a href="#pablo" onClick={e => e.preventDefault()}>
-                    {this.home_title}
+                    {profile.map((user, index) => (user.name))}
                   </a>
                 </Col>
                 <Col className="collapse-close text-right" xs="6">
